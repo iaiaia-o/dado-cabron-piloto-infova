@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>El Dado Cabrón</title>
+  <meta name="description" content="Una partida en vivo para directiv@s: azar + estoicismo aplicado. Descubre tus palancas de brillo y baja el ruido.">
+  <meta property="og:title" content="El Dado Cabrón">
+  <meta property="og:description" content="Jugar con lo que la vida te da (y te quita). Estoicismo práctico para decisiones más brillantes.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/imgs/og-dado-shine.jpg">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* Paleta ejecutiva */
+      --ink:#151515;      /* carbón */
+      --bg:#f6f4ef;      /* hueso cálido base */
+      --frame:#e3ddd2;      /* marco tenue */
+      --gold:#c4a464;      /* oro latido */
+      --gold-1:#faf7f0;      /* fondo sutil oro */
+      --aqua:#2aa198;      /* aguamarina */
+      --aqua-1:#f1f7f6;      /* fondo sutil aqua */
+      --slate:#0f172a;      /* pizarra profunda */
+      --slate-1:#f2f3f6;      /* fondo sutil pizarra */
+      --bone:#f7f6f3;      /* hueso alterno */
+      /* Tipografía */
+      --fs-base: clamp(0.93rem, 1.2vw, 1rem);
+      --fs-lead: clamp(1rem, 1.8vw, 1.12rem);
+      --fs-h1: clamp(2rem, 5vw, 3.2rem);
+      --fs-h2: clamp(1.35rem, 3vw, 2rem);
+      --radius: 20px;
+      --shadow: 0 30px 60px rgba(0,0,0,.12);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: var(--fs-base);
+      line-height:1.7;
+      background:var(--bg);
+      color:var(--ink);
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+    .container{max-width:1180px;margin:0 auto;padding:0 24px}
+    .header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(120%) blur(10px);
+      background:rgba(246,244,239,.85); border-bottom:1px solid rgba(0,0,0,.06);}
+    .head-inner{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0;}
+    .brand{display:flex; gap:.6rem; align-items:center; min-width:0}
+    .brand img{width:28px; height:28px; object-fit:contain; border-radius:6px; flex:0 0 28px}
+    .brand h1{
+      font-family:"Playfair Display", serif; font-weight:500; letter-spacing:-.5px; margin:0;
+      font-size: clamp(1.1rem, 2vw, 1.4rem); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    /* --- CAMBIO AQUÍ --- */
+    .hero{position:relative; min-height:auto; display:grid; place-items:center; padding: 2.5rem 0; border-bottom:1px solid var(--frame); overflow:hidden;}
+    .field{position:absolute; filter:saturate(110%); mix-blend-mode:multiply; border-radius:28px; box-shadow:0 20px 60px rgba(0,0,0,.10); opacity:.9;}
+    .f1{background:linear-gradient(180deg, #0f172a, #3f3f46); width:36vw; height:44vw; left:-6vw; top:-10vw;}
+    .f2{background:linear-gradient(180deg, #e4d2a8, var(--gold)); width:28vw; height:24vw; right:4vw; top:10vw;}
+    .f3{background:linear-gradient(180deg, var(--aqua), #0f766e); width:22vw; height:28vw; right:18vw; bottom:-8vw; border-radius:40px;}
+    .glow{position:absolute; border-radius:50%; filter:blur(64px); opacity:.32; mix-blend-mode:soft-light;}
+    .g1{background:radial-gradient(closest-side, var(--gold) 40%, transparent 70%); width:34vw; height:34vw; left:12vw; top:20vh;}
+    .g2{background:radial-gradient(closest-side, var(--aqua) 40%, transparent 70%); width:26vw; height:26vw; right:8vw; top:16vh;}
+    .g3{background:radial-gradient(closest-side, #0f172a 40%, transparent 70%); width:24vw; height:24vw; right:22vw; bottom:8vh;}
+    .hero-inner{position:relative; z-index:2; text-align:center; max-width:840px; padding:28px 24px;
+      background:rgba(246,244,239,.62); backdrop-filter:blur(8px);
+      border:1px solid rgba(0,0,0,.06); border-radius:var(--radius);}
+    .logo{width:120px; height:auto; opacity:.95; margin:0 auto 10px; display:block;}
+    h2{
+      font-family:"Playfair Display", serif;
+      /* TAMAÑO DEL TÍTULO REDUCIDO */
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      letter-spacing:-.02em;
+      margin:.2rem 0 .85rem;
+    }
+    .lead{font-size:var(--fs-lead); color:#333; max-width:62ch; margin:0 auto .9rem;}
+    .tag{display:inline-block; margin-bottom:8px; font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--aqua);}
+    /* --- CAMBIO AQUÍ --- */
+    .video-section {
+      padding: 2rem 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--frame);
+    }
+    .video-container {
+      position: relative;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .video-wrapper {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--frame);
+    }
+    .video-wrapper video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .sound-toggle {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      z-index: 5;
+      background-color: rgba(21, 21, 21, 0.6);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, .4);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: .25s ease;
+      backdrop-filter: blur(4px);
+    }
+    .sound-toggle:hover {
+      background-color: rgba(21, 21, 21, 0.8);
+      border-color: white;
+    }
+    /* --- CAMBIO AQUÍ --- */
+    .map-section {
+      padding: 2.5rem 0;
+      background: var(--aqua-1);
+      text-align: center;
+    }
+    .map-section p {
+      max-width: 65ch;
+      margin: 0 auto 1.5rem;
+      color: #333;
+      font-size: var(--fs-lead);
+    }
+    .btn {
+      display: inline-block; padding: 12px 24px; border: 1px solid var(--ink); color: var(--ink); background: transparent;
+      font-size:.9rem; font-weight: 500; letter-spacing:.06em; text-decoration:none; transition:.25s ease; border-radius:12px;
+    }
+    .btn.primary {
+      background: var(--ink); color: #fff; border-color: var(--ink);
+    }
+    .btn:hover {
+      background: var(--ink); color: #fff; transform: translateY(-2px);
+    }
+    @media (prefers-reduced-motion:reduce){*, *::before, *::after{animation:none!important; transition:none!important} .glow, .field{display:none}}
+    @media (max-width: 920px){
+      .container, .video-container {padding:0 18px}
+      /* --- CAMBIO AQUÍ --- */
+      .hero{min-height:auto; padding: 2rem 0;}
+      .hero-inner{padding:22px}
+    }
+    @media (max-width: 740px){
+      .brand h1{font-size:1.1rem}
+      .logo{width:100px}
+    }
+    @media (max-width: 520px){
+      .head-inner{flex-wrap:wrap; justify-content:center; gap:8px}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header" aria-label="Barra de navegación">
+    <div class="container head-inner">
+      <div class="brand">
+        <img src="logo-dado.png" alt="Logo El Dado Cabrón">
+        <h1>El Dado Cabrón</h1>
+      </div>
+    </div>
+  </header>
+
+  <section class="video-section">
+    <div class="video-container">
+      <div class="video-wrapper">
+        <video
+            id="mainVideo"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="auto"
+        >
+          <source src="filosofo-dado-cabron.mp4" type="video/mp4">
+          Tu navegador no soporta el elemento de video.
+        </video>
+        <button id="soundButton" class="sound-toggle">Activar Sonido</button>
+      </div>
+    </div>
+  </section>
+  
+  <section class="hero tone-bone" aria-labelledby="t-hero">
+    <div class="field f1" aria-hidden="true"></div>
+    <div class="field f2" aria-hidden="true"></div>
+    <div class="field f3" aria-hidden="true"></div>
+    <div class="glow g1" aria-hidden="true"></div>
+    <div class="glow g2" aria-hidden="true"></div>
+    <div class="glow g3" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <img class="logo" src="logo-dado.png" alt="Logotipo El Dado Cabrón" />
+      <div class="tag">Filosofía · Estrategia · Presencia</div>
+      <h2 id="t-hero">Aprender con los Estoicos</h2>
+      <p class="lead">
+        Un encuentro para inquit@s en el que el azar se convierte en foco, la pausa en ventaja
+        competitiva y cada tirada revela estrategias. Parchís, Management e Inteligencia Artificial. 
+      </p>
+      <p class="lead" style="font-size: 0.9em; margin-top: 0.5rem; color: #151515; font-style: italic;">
+        Necesitarás traer muchas monedas de 1 euro para las apuestas simbólicas/reales y trae también tus máximas o frases de sabiduría preferidas. En algún momento podrás volcarlas en el tablero y serán útiles para todos.
+      </p>
+    </div>
+  </section>
+
+  <section class="map-section">
+    <div class="container">
+        <p>
+            Vamos a construir un Mapa Estoico para adaptar el tablero de juego a nuestra medida. Por favor, accede para aportar —de manera anónima— tus preferencias. Jugaremos a la medida. Gracias. El ID de tu grupo es: 
+        </p>
+        <a href="http://www.elpais.es" class="btn primary">Aportar al Mapa</a>
+    </div>
+  </section>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.getElementById('mainVideo');
+      const soundButton = document.getElementById('soundButton');
+
+      if (video && soundButton) {
+          soundButton.addEventListener('click', function() {
+              if (video.muted) {
+                  video.muted = false;
+                  soundButton.textContent = 'Silenciar';
+              } else {
+                  video.muted = true;
+                  soundButton.textContent = 'Activar Sonido';
+              }
+          });
+      }
+    });
+  </script>
+</body>
+</html>
